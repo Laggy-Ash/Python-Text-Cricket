@@ -51,6 +51,12 @@ play_choice_user = 0
 score_user = 0
 
 
+def main():
+    print(toss(tosschoice))
+    print(choice(tosswin))
+    play()
+
+
 def toss(user_tosschoice):
     tossresult = random.choice(tossoptions)
     global tosswin
@@ -194,6 +200,5 @@ def play():
                 user_ball()
 
 
-print(toss(tosschoice))
-print(choice(tosswin))
-play()
+if __name__ == '__main__':
+    main()
