@@ -29,7 +29,9 @@ expressions = {
     "user_score": "Your score is: ",
     "program_score": "Program's score is: ",
     "user_won": "Congratulations! You've won!",
-    "program_won": "The program won this game. Better luck next time!"
+    "program_won": "The program won this game. Better luck next time!",
+    "user_to_win": "The score required for the porgram to win is",
+    "program_to_win": "The score required for the program to win is"
 }
 
 # Variables
@@ -40,11 +42,9 @@ toss_invalid = True
 playchoice = ['bat', 'ball']
 runs = [0, 1, 2, 3, 4, 5, 6]
 round_1_over = False
-# Program related var
 try_program = 0
 play_choice_program = 0
 score_program = 0
-# User related var
 chose_user = False
 try_user = 0
 play_choice_user = 0
@@ -94,18 +94,22 @@ def choice(toss_win_status):
 
 
 def compare(userscore, programscore):
+    def scores(user_score, program_score, win):
+        print(f"Your final score is {user_score}")
+        print(f"Program's final score is {program_score}")
+        if win:
+            print(expressions["user_won"])
+        elif win == False:
+            print(expressions["program_won"])
+        else:
+            print("This feature is under development")
+
     if userscore > programscore:
-        print(f"Your final score is {userscore}")
-        print(f"Program's final score is {programscore}")
-        print(expressions["user_won"])
+        scores(userscore, programscore, True)
     elif userscore < programscore:
-        print(f"Your final score is {userscore}")
-        print(f"Program's final score is {programscore}")
-        print(expressions["program_won"])
+        scores(userscore, programscore, False)
     else:
-        print(f"Your final score is {userscore}")
-        print(f"Program's final score is {programscore}")
-        print("This feature is under development")
+        scores(userscore, programscore, None)
     exit()
 
 
@@ -180,23 +184,23 @@ def play():
         if play_choice_user == 'bat':
             user_bat()
             if round_1_over:
-                print(f"The score required for the porgram to win {score_user + 1}")
+                print(f'{expressions["program_to_win"]} {score_user + 1}')
                 user_ball()
         if play_choice_user == 'ball':
             user_ball()
             if round_1_over:
-                print(f"The score required for the you to win {score_program + 1}")
+                print(f'{expressions["user_to_win"]} {score_program + 1}')
                 user_bat()
     if not chose_user:
         if play_choice_program == 'bat':
             user_ball()
             if round_1_over:
-                print(f"The score required for the you to win {score_program + 1}")
+                print(f'{expressions["user_to_win"]} {score_program + 1}')
                 user_bat()
         if play_choice_program == 'ball':
             user_bat()
             if round_1_over:
-                print(f"The score required for the porgram to win {score_user + 1}")
+                print(f'{expressions["program_to_win"]} {score_user + 1}')
                 user_ball()
 
 
