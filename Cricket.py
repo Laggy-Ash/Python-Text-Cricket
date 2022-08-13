@@ -30,7 +30,7 @@ expressions = {
     "program_score": "Program's score is: ",
     "user_won": "Congratulations! You've won!",
     "program_won": "The program won this game. Better luck next time!",
-    "user_to_win": "The score required for the porgram to win is",
+    "user_to_win": "The score required for the user to win is",
     "program_to_win": "The score required for the program to win is"
 }
 
@@ -92,6 +92,12 @@ def choice(toss_win_status):
         play_choice_program = random.choice(playchoice)
         return f"Program chose to {play_choice_program}"
 
+def super_over():
+    global round_1_over
+    round_1_over = False 
+    play()
+       
+
 
 def compare(userscore, programscore):
     def scores(user_score, program_score, win):
@@ -102,7 +108,9 @@ def compare(userscore, programscore):
         elif win == False:
             print(expressions["program_won"])
         else:
-            print("This feature is under development")
+            print("\n\nSo let Start Super Over...\n")
+            super_over()
+            
 
     if userscore > programscore:
         scores(userscore, programscore, True)
@@ -111,6 +119,7 @@ def compare(userscore, programscore):
     else:
         scores(userscore, programscore, None)
     exit()
+
 
 
 def user_bat():
