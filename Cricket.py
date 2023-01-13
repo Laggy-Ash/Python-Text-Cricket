@@ -30,12 +30,12 @@ expressions = {
     "program_score": "Program's score is: ",
     "user_won": "Congratulations! You've won!",
     "program_won": "The program won this game. Better luck next time!",
-    "user_to_win": "The score required for the user to win is",
+    "user_to_win": "The score required for the porgram to win is",
     "program_to_win": "The score required for the program to win is"
 }
 
 # Variables
-tossoptions = ['odd', 'even']
+tossoptions = ['odd', 'even', 'o', 'e']
 tosschoice = 0
 tosswin = False
 toss_invalid = True
@@ -49,6 +49,7 @@ chose_user = False
 try_user = 0
 play_choice_user = 0
 score_user = 0
+balls = 0
 
 
 def main():
@@ -92,12 +93,6 @@ def choice(toss_win_status):
         play_choice_program = random.choice(playchoice)
         return f"Program chose to {play_choice_program}"
 
-def super_over():
-    global round_1_over
-    round_1_over = False 
-    play()
-       
-
 
 def compare(userscore, programscore):
     def scores(user_score, program_score, win):
@@ -108,9 +103,7 @@ def compare(userscore, programscore):
         elif win == False:
             print(expressions["program_won"])
         else:
-            print("\n\nSo let Start Super Over...\n")
-            super_over()
-            
+            superover()
 
     if userscore > programscore:
         scores(userscore, programscore, True)
@@ -121,13 +114,13 @@ def compare(userscore, programscore):
     exit()
 
 
-
-def user_bat():
+def user_bat(super = False):
     global round_1_over
     global try_user
     global try_program
     global score_user
     global score_program
+    global balls
     try_program = 7
     while try_user != try_program:
         if round_1_over:
@@ -145,22 +138,27 @@ def user_bat():
                     score_user = score_user + try_program
                 else:
                     score_user = score_user + try_user
+            if super:
+                balls+=1
+                return balls
         except ValueError:
             print("Only integers are allowed")
     score_user = score_user - try_user
     if round_1_over:
         compare(score_user, score_program)
-    print(expressions["out"])
-    print(f"You scored a total of {score_user} runs")
-    round_1_over = True
+    while not super:
+        print(expressions["out"])
+        print(f"You scored a total of {score_user} runs")
+        round_1_over = True
 
 
-def user_ball():
+def user_ball(super = False):
     global round_1_over
     global try_user
     global try_program
     global score_user
     global score_program
+    global balls
     try_user = 7
     while try_user != try_program:
         if round_1_over:
@@ -178,14 +176,18 @@ def user_ball():
                     score_program = score_program + try_user
                 else:
                     score_program = score_program + try_program
+            if super:
+                balls+=1
+                return balls
         except ValueError:
             print("Only integers are allowed")
     score_program = score_program - try_program
     if round_1_over:
         compare(score_user, score_program)
-    print(expressions["out"])
-    print(f"Program scored a total of {score_program} runs")
-    round_1_over = True
+    while not super:
+        print(expressions["out"])
+        print(f"Program scored a total of {score_program} runs")
+        round_1_over = True
 
 
 def play():
@@ -212,6 +214,22 @@ def play():
                 print(f'{expressions["program_to_win"]} {score_user + 1}')
                 user_ball()
 
+def superover():
+    global balls
+    global score_program
+    global score_user
+    score_user = score_program = 0
+    while balls < 6:
+        user_bat(True)
+    print('\nThe program bats now')
+    balls = 0
+    while balls < 6:
+        user_ball(True)
+    print (f"\nThe final scores after the superover are: \n Program's score:  {score_program} \n User's score: {score_user}")
+    if score_user > score_program:
+        print(expressions["user_won"])
+    else:
+        print(expressions["program_won"])
 
 if __name__ == '__main__':
     main()
